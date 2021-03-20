@@ -1,3 +1,5 @@
+Zadanie
+
 backend dla aplikacji
 system do zarzadzania przeplywem aplikacji
 stworzenie menu i umozliwienie jego edytowania
