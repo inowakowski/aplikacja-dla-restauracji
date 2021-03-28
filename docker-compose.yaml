@@ -1,0 +1,9 @@
+mysql:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: restaurant_manager_db
+      MYSQL_ROOT_PASSWORD:
+      MYSQL_ALLOW_EMPTY_PASSWORD: '1'
+    ports:
+        - 3306:3306
