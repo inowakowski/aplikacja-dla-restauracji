@@ -1,0 +1,28 @@
+{
+  "name": "aplikacja-dla-restauracji",
+  "version": "1.0.0",
+  "description": "Zadanie",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "dev": "nodemon ./index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/inowakowski/aplikacja-dla-restauracji.git"
+  },
+  "author": "23780",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/inowakowski/aplikacja-dla-restauracji/issues"
+  },
+  "homepage": "https://github.com/inowakowski/aplikacja-dla-restauracji#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "helmet": "^4.4.1"
+  }
+}
