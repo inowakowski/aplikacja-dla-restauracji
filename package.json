@@ -5,14 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "dev": "nodemon ./index.js",
-    "start": "nodemon ./app.js"
+    "dev": "nodemon ./index.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/inowakowski/aplikacja-dla-restauracji.git"
   },
-  "author": "23784, 23780, 23804, 23828",
+  "author": "23784, 23780, 23804",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/inowakowski/aplikacja-dla-restauracji/issues"
@@ -24,7 +23,6 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
-    "helmet": "^4.4.1",
-    "mysql2": "^2.2.5"
+    "helmet": "^4.4.1"
   }
 }
