@@ -14,7 +14,6 @@ app.get("/", (req, res) => {
   res.send("Homepage of restaurant manager");
 });
 
-//Dodawanie dań
 app.post("/addProduct", (req, res) => {
   const { item_name, item_price, category, price_currency } = req.body;
 
@@ -29,7 +28,6 @@ app.post("/addProduct", (req, res) => {
   );
 });
 
-//Proguktu w Menu
 app.get("/products", (req, res) => {
   let sql = "SELECT * FROM menu";
 
@@ -43,21 +41,4 @@ app.get("/products", (req, res) => {
       res.send("List of products");
     }
   });
-});
-
-//Edycja Menu
-app.put("/editMenu", (req, res) => {
-  const { item_name, item_price, category, price_currency } = req.body;
-
-  let sql1 = "UPDATE menu SET ";
-  let sql2 = "WHERE ";
-  db.query(
-    sql1,
-    { item_id },sql2,
-    {item_name, item_price, category, price_currency },
-    (err, result) => {
-      if (err) throw err;
-      res.send("Product update to menu");
-    }
-  );
 });
