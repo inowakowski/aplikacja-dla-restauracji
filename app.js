@@ -1,7 +1,7 @@
 const { request } = require("express");
 const express = require("express");
 const bodyParser = require("body-parser");
-const db = require("./database/connect");
+const db = require("./src/database");
 
 const app = express();
 app.use(bodyParser.json());
@@ -47,13 +47,11 @@ app.get("/products", (req, res) => {
 
 //Editing menu
 app.patch("/editMenu", (req, res) => {
-  const { item_name, item_price, category, price_currency } = req.body;
+  const { item_id, item_name, item_price, category, price_currency } = req.body;
 
-  let sql1 = "UPDATE menu SET ";
-  let sql2 = "WHERE ";
+  let sql1 = "UPDATE menu SET item_name = ?, item_price = ?, category = ?, price_currency = ? WHERE item_id = ?";
   db.query(
-    sql1, { item_name, item_price, category, price_currency },
-    sql2, { item_id },
+    sql1,{ item_id, item_name, item_price, category, price_currency },
     (err, result) => {
       if (err) throw err;
       res.send("Product update to menu");
@@ -61,3 +59,10 @@ app.patch("/editMenu", (req, res) => {
   );
 });
 
+app.post("/order", (req,res) =>{
+  const {item_name, item_price, price_currency} = req.body;
+
+  let sql = "INSERT INTO order SET ?";
+
+
+})
