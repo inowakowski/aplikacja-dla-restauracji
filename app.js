@@ -2,6 +2,7 @@ const { request } = require("express");
 const express = require("express");
 const bodyParser = require("body-parser");
 const db = require("./src/database");
+const { json } = require("body-parser");
 
 const app = express();
 app.use(bodyParser.json());
@@ -86,12 +87,15 @@ app.put("/changeOrderStatus", (req, res) => {
   );
 });
 
+// Endpoint - Compose bills
 app.get("/bill", (req,res) =>{
   const { id_table, bill_orders, delivered_time, order_time } = req.body;
 
-  let sqlTime = `SELECT item_id FROM orders WHERE table_nr = ${id_table}`;
+  let sqlItem = `SELECT item_id  FROM orders WHERE table_nr = ${id_table}`;
+  // let bill = json.parse(sqlItem);
   db.query(
-    sqlTime,
+    sqlItem,
+    // bill,
     (err, result) => {
       if (err) throw err;
       console.log("result ", result);
