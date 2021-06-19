@@ -89,10 +89,9 @@ app.put("/changeOrderStatus", (req, res) => {
 app.get("/bill", (req,res) =>{
   const { id_table, bill_orders, delivered_time, order_time } = req.body;
 
-  let sqlTime = "SELECT items_id FROM orders where table_nr = ?";
+  let sqlTime = `SELECT item_id FROM orders WHERE table_nr = ${id_table}`;
   db.query(
     sqlTime,
-    {id_table},
     (err, result) => {
       if (err) throw err;
       console.log("result ", result);
