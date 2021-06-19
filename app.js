@@ -1,7 +1,7 @@
 const { request } = require("express");
 const express = require("express");
 const bodyParser = require("body-parser");
-const db = require("./src/database");
+const db = require("./database/connect");
 
 const app = express();
 app.use(bodyParser.json());
@@ -14,7 +14,7 @@ app.get("/", (req, res) => {
   res.send("Homepage of restaurant manager");
 });
 
-//Dodawanie dań
+//Add products
 app.post("/addProduct", (req, res) => {
   const { item_name, item_price, category, price_currency } = req.body;
 
@@ -29,7 +29,7 @@ app.post("/addProduct", (req, res) => {
   );
 });
 
-//Proguktu w Menu
+//Menu with all products
 app.get("/products", (req, res) => {
   let sql = "SELECT * FROM menu";
 
@@ -45,8 +45,8 @@ app.get("/products", (req, res) => {
   });
 });
 
-//Edycja Menu
-app.put("/editMenu", (req, res) => {
+//Editing menu
+app.patch("/editMenu", (req, res) => {
   const { item_name, item_price, category, price_currency } = req.body;
 
   let sql1 = "UPDATE menu SET ";
@@ -60,3 +60,4 @@ app.put("/editMenu", (req, res) => {
     }
   );
 });
+
