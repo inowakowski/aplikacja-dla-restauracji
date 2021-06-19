@@ -85,3 +85,19 @@ app.put("/changeOrderStatus", (req, res) => {
     }
   );
 });
+
+app.get("/bill", (req,res) =>{
+  const { id_table, bill_orders, delivered_time, order_time } = req.body;
+
+  let sqlTime = "SELECT items_id FROM orders where table_nr = ?";
+  db.query(
+    sqlTime,
+    {id_table},
+    (err, result) => {
+      if (err) throw err;
+      console.log("result ", result);
+      res.send("Bill is generate");
+    }
+  );
+
+})
