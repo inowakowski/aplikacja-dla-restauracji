@@ -14,7 +14,7 @@ app.get("/", (req, res) => {
   res.send("Homepage of restaurant manager");
 });
 
-//Dodawanie dań
+//Endpoint - adding products to menu
 app.post("/addProduct", (req, res) => {
   const { item_name, item_price, category, price_currency } = req.body;
 
@@ -29,7 +29,7 @@ app.post("/addProduct", (req, res) => {
   );
 });
 
-//Proguktu w Menu
+//Endpoint - List of products
 app.get("/products", (req, res) => {
   let sql = "SELECT * FROM menu";
 
@@ -46,3 +46,42 @@ app.get("/products", (req, res) => {
 });
 
 //Edycja Menu - TODO
+
+// Endpoint - Adding orders
+app.post("/addOrder", (req, res) => {
+  const { status_name, item_id, table_nr } = req.body;
+
+  let sql = "INSERT INTO orders SET ?";
+  db.query(
+    sql,
+    {
+      status_name,
+      item_id: JSON.stringify({ data: item_id }),
+      table_nr,
+      order_time: new Date(),
+    },
+    (err, result) => {
+      if (err) throw err;
+      res.send("Order accepted");
+    }
+  );
+});
+
+// Endpoint - Change order status
+app.put("/changeOrderStatus", (req, res) => {
+  const { new_status_name, order_id } = req.body;
+
+  let sqlUpdate = `UPDATE orders SET status_name = "${new_status_name}", ? WHERE order_id = ${order_id}`;
+
+  db.query(
+    sqlUpdate,
+    {
+      delivered_time: new Date(),
+    },
+    (err, result) => {
+      if (err) throw err;
+      console.log("result ", result);
+      res.send("Changed order status");
+    }
+  );
+});
