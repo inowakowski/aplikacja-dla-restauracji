@@ -45,19 +45,4 @@ app.get("/products", (req, res) => {
   });
 });
 
-//Edycja Menu
-app.put("/editMenu", (req, res) => {
-  const { item_name, item_price, category, price_currency } = req.body;
-
-  let sql1 = "UPDATE menu SET ";
-  let sql2 = "WHERE ";
-  db.query(
-    sql1,
-    { item_id },sql2,
-    {item_name, item_price, category, price_currency },
-    (err, result) => {
-      if (err) throw err;
-      res.send("Product update to menu");
-    }
-  );
-});
+//Edycja Menu - TODO
