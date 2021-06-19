@@ -52,9 +52,8 @@ app.put("/editMenu", (req, res) => {
   let sql1 = "UPDATE menu SET ";
   let sql2 = "WHERE ";
   db.query(
-    sql1,
-    { item_id },sql2,
-    {item_name, item_price, category, price_currency },
+    sql1, { item_name, item_price, category, price_currency },
+    sql2, { item_id },
     (err, result) => {
       if (err) throw err;
       res.send("Product update to menu");
