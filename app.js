@@ -89,9 +89,9 @@ app.put("/changeOrderStatus", (req, res) => {
 
 // Endpoint - Compose bills
 app.get("/bill", (req,res) =>{
-  const { id_table, bill_orders, delivered_time, order_time } = req.body;
+  const { id_table, order_id, delivered_time, order_time } = req.body;
 
-  let sqlItem = `SELECT item_id  FROM orders WHERE table_nr = ${id_table}`;
+  let sqlItem = `SELECT item_id  FROM orders WHERE order_id = ${order_id}`;
   // let bill = json.parse(sqlItem);
   db.query(
     sqlItem,
