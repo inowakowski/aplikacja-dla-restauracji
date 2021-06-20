@@ -36,12 +36,12 @@ app.get("/products", (req, res) => {
 
   db.query(sql, (err, result) => {
     if (err) throw err;
-    console.log(result);
+    res.json(result);
     if (result.length < 12) {
       res.send("Add at least 12 products!");
       console.log("List of products: ", result);
     } else {
-      res.send("List of products");
+      res.json("List of products");
     }
   });
 });
@@ -98,7 +98,7 @@ app.get("/bill", (req,res) =>{
     // bill,
     (err, result) => {
       if (err) throw err;
-      console.log("result ", result);
+      res.json("Bill ", result);
       res.send("Bill is generate");
     }
   );
