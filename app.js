@@ -57,7 +57,7 @@ app.post("/addOrder", (req, res) => {
     sql,
     {
       status_name,
-      item_id: JSON.stringify({ data: item_id }),
+      item_id: JSON.stringify(item_id),
       table_nr,
       order_time: new Date(),
     },
@@ -82,6 +82,7 @@ app.put("/changeOrderStatus", (req, res) => {
     (err, result) => {
       if (err) throw err;
       console.log("result ", result);
+      res.json("result", result)
       res.send("Changed order status");
     }
   );
@@ -89,18 +90,23 @@ app.put("/changeOrderStatus", (req, res) => {
 
 // Endpoint - Compose bills
 app.get("/bill", (req,res) =>{
-  const { id_table, order_id, delivered_time, order_time } = req.body;
+  const { order_id } = req.body;
 
-  let sqlItem = `SELECT item_id  FROM orders WHERE order_id = ${order_id}`;
-  // let bill = json.parse(sqlItem);
+  let sqlItem = `SELECT item_id FROM orders WHERE order_id = ${order_id}`;
+  // let sqlBill = `SELECT item_name, item_price, price_currency FROM menu WHERE item_id = (SELECT item_id FROM orders WHERE order_id = ${order_id})`;
+  // let item = JSON.parse(bill);
   db.query(
+    // sqlBill,
     sqlItem,
     // bill,
     (err, result) => {
       if (err) throw err;
-      res.json("Bill ", result);
-      res.send("Bill is generate");
+      res.json(result);
+      // console.log(result);
+      // res.send("Bill is generate");
     }
   );
+
+  
 
 })
