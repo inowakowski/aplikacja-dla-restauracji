@@ -36,12 +36,12 @@ app.get("/products", (req, res) => {
 
   db.query(sql, (err, result) => {
     if (err) throw err;
-    console.log(result);
+    // console.log(result);
     if (result.length < 12) {
-      res.send("Add at least 12 products!");
+      res.json("Add at least 12 products!");
       console.log("List of products: ", result);
     } else {
-      res.send("List of products");
+      res.json(result);
     }
   });
 });
@@ -57,7 +57,7 @@ app.post("/addOrder", (req, res) => {
     sql,
     {
       status_name,
-      item_id: JSON.stringify({ data: item_id }),
+      item_id: JSON.stringify(item_id),
       table_nr,
       order_time: new Date(),
     },
@@ -87,20 +87,19 @@ app.put("/changeOrderStatus", (req, res) => {
   );
 });
 
+// const apiNbp = `http://api.nbp.pl/api/exchangerates/rates/a/${code}/?format=json`
+
 // Endpoint - Compose bills
-app.get("/bill", (req,res) =>{
-  const { id_table, bill_orders, delivered_time, order_time } = req.body;
+app.get("/bill", (req, res) => {
+  const { order_id } = req.body;
 
-  let sqlItem = `SELECT item_id  FROM orders WHERE table_nr = ${id_table}`;
-  // let bill = json.parse(sqlItem);
-  db.query(
-    sqlItem,
-    // bill,
-    (err, result) => {
-      if (err) throw err;
-      console.log("result ", result);
-      res.send("Bill is generate");
-    }
-  );
+  let sqlItem = `SELECT item_id  FROM orders WHERE order_id = ${order_id}`;
+  db.query(sqlItem, (err, result) => {
+    if (err) console.log("error: ", err);
+    console.log("result ", result);
+    const items_ids = JSON.parse(result[0]["item_id"]);
+    console.log(items_ids);
 
-})
+    res.send("Bill is generate");
+  });
+});
