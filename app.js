@@ -38,10 +38,10 @@ app.get("/products", (req, res) => {
     if (err) throw err;
     // console.log(result);
     if (result.length < 12) {
-      res.json("Add at least 12 products!");
+      res.send("Add at least 12 products!");
       console.log("List of products: ", result);
     } else {
-      res.json(result);
+      res.send(result);
     }
   });
 });
