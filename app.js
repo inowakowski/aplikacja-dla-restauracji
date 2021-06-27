@@ -46,7 +46,21 @@ app.get("/products", (req, res) => {
   });
 });
 
-//Edycja Menu - TODO
+//Edycja Menu
+app.put("/changeMenu", (req, res) => {
+  const { item_name, item_price, category, item_id } = req.body;
+
+  let sqlUpdate = `UPDATE menu SET item_name = "${item_name}", item_price = "${item_price}", category = "${category}" WHERE item_id = ${item_id}`;
+
+  db.query(
+    sqlUpdate,
+    (err, result) => {
+      if (err) throw err;
+      console.log("result ", result);
+      res.send("Menu has changed");
+    }
+  );
+});
 
 // Endpoint - Adding orders
 app.post("/addOrder", (req, res) => {
@@ -98,6 +112,7 @@ app.get("/bill", (req, res) => {
   db.query(sqlItem, (err, result) => {
     if (err) throw err;
     const items_ids = JSON.parse(result[0]["item_id"]);
+    var count = 0;
     for(const items of items_ids ){
       let sqlBill = `SELECT item_name, item_price, price_currency FROM menu WHERE item_id = ?`;
       db.query(sqlBill, items,
@@ -106,20 +121,20 @@ app.get("/bill", (req, res) => {
           const i_name = result[0]["item_name"];
           const i_price = JSON.parse(result[0]["item_price"]);
           const p_currency = result[0]["price_currency"];
-          // console.log(result);
           console.log(i_name, " ", i_price, p_currency);
 
-          return i_price;
+          count = count + i_price;
+          sum = count.toFixed(2);
+          return sum;
         })
-        // let sum =+ i_price;
-        // console.log(i_price);
+        // console.log(result2);
     };
     const orderT = result[0]["order_time"];
     const deliceredT = result[0]["delivered_time"];
     var timeHours = deliceredT.getHours() - orderT.getHours();
     var timeMinutes = deliceredT.getMinutes() - orderT.getMinutes();
     var timeSeconds = deliceredT.getSeconds() - orderT.getSeconds();
-    console.log("Czas dostarczenia:", timeHours, "h", timeMinutes, "min", timeSeconds, "sec") ;
+    console.log("Devidery time:", timeHours, "h", timeMinutes, "min", timeSeconds, "sec") ;
     res.send("Bill is generate");
   });
 });
