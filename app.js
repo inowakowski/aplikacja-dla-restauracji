@@ -92,14 +92,35 @@ app.put("/changeOrderStatus", (req, res) => {
 // Endpoint - Compose bills
 app.get("/bill", (req, res) => {
   const { order_id } = req.body;
-
-  let sqlItem = `SELECT item_id  FROM orders WHERE order_id = ${order_id}`;
+  
+  let sqlItem = `SELECT item_id, order_time, delivered_time  FROM orders WHERE order_id = ${order_id}`;
+  console.log(" ");
   db.query(sqlItem, (err, result) => {
-    if (err) console.log("error: ", err);
-    console.log("result ", result);
+    if (err) throw err;
     const items_ids = JSON.parse(result[0]["item_id"]);
-    console.log(items_ids);
+    for(const items of items_ids ){
+      let sqlBill = `SELECT item_name, item_price, price_currency FROM menu WHERE item_id = ?`;
+      db.query(sqlBill, items,
+        (err, result) => {
+          if (err) throw err;
+          const i_name = result[0]["item_name"];
+          const i_price = JSON.parse(result[0]["item_price"]);
+          const p_currency = result[0]["price_currency"];
+          // console.log(result);
+          console.log(i_name, " ", i_price, p_currency);
 
+          return i_price;
+        })
+        // let sum =+ i_price;
+        // console.log(i_price);
+    };
+    const orderT = result[0]["order_time"];
+    const deliceredT = result[0]["delivered_time"];
+    var timeHours = deliceredT.getHours() - orderT.getHours();
+    var timeMinutes = deliceredT.getMinutes() - orderT.getMinutes();
+    var timeSeconds = deliceredT.getSeconds() - orderT.getSeconds();
+    var od = 1000 * 60 * 60 * 24;
+    console.log("Czas dostarczenia:", timeHours, "h", timeMinutes, "min", timeSeconds, "sec") ;
     res.send("Bill is generate");
   });
 });
