@@ -119,7 +119,6 @@ app.get("/bill", (req, res) => {
     var timeHours = deliceredT.getHours() - orderT.getHours();
     var timeMinutes = deliceredT.getMinutes() - orderT.getMinutes();
     var timeSeconds = deliceredT.getSeconds() - orderT.getSeconds();
-    var od = 1000 * 60 * 60 * 24;
     console.log("Czas dostarczenia:", timeHours, "h", timeMinutes, "min", timeSeconds, "sec") ;
     res.send("Bill is generate");
   });
