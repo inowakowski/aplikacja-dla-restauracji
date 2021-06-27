@@ -46,7 +46,7 @@ app.get("/products", (req, res) => {
   });
 });
 
-//Edycja Menu
+//Endpoint - Edit menu
 app.put("/changeMenu", (req, res) => {
   const { item_name, item_price, category, item_id } = req.body;
 
