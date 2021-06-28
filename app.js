@@ -41,7 +41,7 @@ app.get("/products", (req, res) => {
       res.send("Add at least 12 products!");
       console.log("List of products: ", result);
     } else {
-      res.send(result);
+      res.json(result);
     }
   });
 });
@@ -113,21 +113,36 @@ app.get("/bill", (req, res) => {
     if (err) throw err;
     const items_ids = JSON.parse(result[0]["item_id"]);
     var count = 0;
+    let sum;
     for(const items of items_ids ){
       let sqlBill = `SELECT item_name, item_price, price_currency FROM menu WHERE item_id = ?`;
-      db.query(sqlBill, items,
-        (err, result) => {
-          if (err) throw err;
-          const i_name = result[0]["item_name"];
-          const i_price = JSON.parse(result[0]["item_price"]);
-          const p_currency = result[0]["price_currency"];
-          console.log(i_name, " ", i_price, p_currency);
-
-          count = count + i_price;
-          sum = count.toFixed(2);
-          return sum;
-        })
-        // console.log(result2);
+      if (items_ids.length -1 !== items_ids.indexOf(items)){
+        // return sum;
+        db.query(sqlBill, items,
+          (err, result2) => {
+            if (err) throw err;
+            const i_name = result2[0]["item_name"];
+            const i_price = JSON.parse(result2[0]["item_price"]);
+            const p_currency = result2[0]["price_currency"];
+            console.log(i_name, " ",i_price, p_currency);
+            count = count + i_price;
+            sum = count.toFixed(2);
+          });
+      }
+      else{
+        db.query(sqlBill, items,
+          (err, result2) => {
+            if (err) throw err;
+            const i_name = result2[0]["item_name"];
+            const i_price = JSON.parse(result2[0]["item_price"]);
+            const p_currency = result2[0]["price_currency"];
+            console.log(i_name, " ",i_price, p_currency);
+            count = count + i_price;
+            sum = count.toFixed(2);
+            console.log("-----------------------\nSuma: ",parseFloat(sum), p_currency);
+            return sum;
+          });
+        }
     };
     const orderT = result[0]["order_time"];
     const deliceredT = result[0]["delivered_time"];
@@ -136,5 +151,6 @@ app.get("/bill", (req, res) => {
     var timeSeconds = deliceredT.getSeconds() - orderT.getSeconds();
     console.log("Devidery time:", timeHours, "h", timeMinutes, "min", timeSeconds, "sec") ;
     res.send("Bill is generate");
+    // res.json(result);
   });
 });
