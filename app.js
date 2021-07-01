@@ -172,3 +172,40 @@ app.get("/bill", (req, res) => {
     res.send("Bill is generate");
   });
 });
+
+app.get("/currency", (req, res) => {
+  const {id_bill, currency} = req.body;
+
+  sqlSelect = `SELECT cost_pln FROM bill WHERE id_bill = ${id_bill}`;
+  sqlInsert = `INSERT INTO currency SET ?`
+  var url = `http://api.nbp.pl/api/exchangerates/rates/a/${currency}/?format=json`;
+  var request = require("request")
+  
+  db.query(sqlSelect, 
+    (err, result) => {
+      if (err) throw err;
+      const pln = result[0]["cost_pln"];
+      request({
+        url: url,
+        json: true
+        }, function (error, response, body) {
+    
+          if (!error && response.statusCode === 200) {
+            const c_value = body["rates"][0]["mid"];
+            // const c_value2 = JSON.parse(c_value["bid"]);
+            var exchange = pln/c_value.toFixed(2);
+            // res.json(c_value);
+            res.json(body);
+            db.query(sqlInsert,
+              {
+                bill_id: id_bill,
+                currency_value: parseFloat(exchange),
+                currency: currency,
+              },
+              );
+          }
+        }
+      )
+    },)
+
+})
