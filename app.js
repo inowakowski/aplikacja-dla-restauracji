@@ -125,6 +125,7 @@ app.get("/bill", (req, res) => {
             const i_price = JSON.parse(result2[0]["item_price"]);
             const p_currency = result2[0]["price_currency"];
             console.log(i_name, " ",i_price, p_currency);
+            // res.json(i_name+" "+i_price+p_currency);
             count = count + i_price;
             sum = count.toFixed(2);
           });
@@ -137,9 +138,11 @@ app.get("/bill", (req, res) => {
             const i_price = JSON.parse(result2[0]["item_price"]);
             const p_currency = result2[0]["price_currency"];
             console.log(i_name, " ",i_price, p_currency);
+            // res.json(i_name+" "+i_price+p_currency);
             count = count + i_price;
             sum = count.toFixed(2);
             console.log("-----------------------\nSuma: ",parseFloat(sum), p_currency);
+            // res.json("Suma: "+parseFloat(sum)+p_currency);
             return sum;
           });
         }
@@ -149,8 +152,12 @@ app.get("/bill", (req, res) => {
     var timeHours = deliceredT.getHours() - orderT.getHours();
     var timeMinutes = deliceredT.getMinutes() - orderT.getMinutes();
     var timeSeconds = deliceredT.getSeconds() - orderT.getSeconds();
-    console.log("Devidery time:", timeHours, "h", timeMinutes, "min", timeSeconds, "sec") ;
+    let newDate = new Date();
+    let dateBill = ("0" + newDate.getDate()).slice(-2);
+    let monthBill = ("0" + newDate.getMonth()).slice(-2);
+    let yearBill = newDate.getFullYear();
+    // console.log("Devidery time:", timeHours,"h ",timeMinutes,"min ",timeSeconds,"sec\n") ;
+    res.json("Devidery time:"+timeHours+"h "+timeMinutes+"min "+timeSeconds+"sec"+" Date of bill: "+dateBill + "-"+monthBill+"-"+yearBill) ;
     res.send("Bill is generate");
-    // res.json(result);
   });
 });
