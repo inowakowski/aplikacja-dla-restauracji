@@ -109,55 +109,64 @@ app.get("/bill", (req, res) => {
   
   let sqlItem = `SELECT item_id, order_time, delivered_time  FROM orders WHERE order_id = ${order_id}`;
   console.log(" ");
-  db.query(sqlItem, (err, result) => {
-    if (err) throw err;
-    const items_ids = JSON.parse(result[0]["item_id"]);
-    var count = 0;
-    let sum;
-    for(const items of items_ids ){
+  db.query(sqlItem, 
+    (err, result) => {
+      if (err) throw err;
+      const orderT = result[0]["order_time"];
+      const deliceredT = result[0]["delivered_time"];
+      const items_ids = JSON.parse(result[0]["item_id"]);
+      var timeHours = deliceredT.getHours() - orderT.getHours();
+      var timeMinutes = deliceredT.getMinutes() - orderT.getMinutes();
+      var timeSeconds = deliceredT.getSeconds() - orderT.getSeconds();
+      // let newDate = new Date();
+      // let dateBill = ("0" + newDate.getDate()).slice(-2);
+      // let monthBill = ("0" + newDate.getMonth()).slice(-2);
+      // let yearBill = newDate.getFullYear();
+      // let sum;
+      // res.json("Devidery time:"+timeHours+"h "+timeMinutes+"min "+timeSeconds+"sec"+" Date of bill: "+dateBill + "-"+monthBill+"-"+yearBill) ;
+      var count = 0;
       let sqlBill = `SELECT item_name, item_price, price_currency FROM menu WHERE item_id = ?`;
-      if (items_ids.length -1 !== items_ids.indexOf(items)){
-        // return sum;
-        db.query(sqlBill, items,
-          (err, result2) => {
-            if (err) throw err;
-            const i_name = result2[0]["item_name"];
-            const i_price = JSON.parse(result2[0]["item_price"]);
-            const p_currency = result2[0]["price_currency"];
-            console.log(i_name, " ",i_price, p_currency);
-            // res.json(i_name+" "+i_price+p_currency);
-            count = count + i_price;
-            sum = count.toFixed(2);
-          });
-      }
-      else{
-        db.query(sqlBill, items,
-          (err, result2) => {
-            if (err) throw err;
-            const i_name = result2[0]["item_name"];
-            const i_price = JSON.parse(result2[0]["item_price"]);
-            const p_currency = result2[0]["price_currency"];
-            console.log(i_name, " ",i_price, p_currency);
-            // res.json(i_name+" "+i_price+p_currency);
-            count = count + i_price;
-            sum = count.toFixed(2);
-            console.log("-----------------------\nSuma: ",parseFloat(sum), p_currency);
-            // res.json("Suma: "+parseFloat(sum)+p_currency);
-            return sum;
-          });
+      let sqlBillInsert = `INSERT INTO bill SET ?`;
+      for(const items of items_ids ){
+        if (items_ids.length -1 !== items_ids.indexOf(items)){
+          // return sum;
+          db.query(sqlBill, items,
+            (err, result2) => {
+              if (err) throw err;
+              const i_name = result2[0]["item_name"];
+              const i_price = JSON.parse(result2[0]["item_price"]);
+              const p_currency = result2[0]["price_currency"];
+              console.log(i_name, " ",i_price, p_currency);
+              // res.json(i_name+" "+i_price+p_currency);
+              count = count + i_price;
+              sum = count.toFixed(2);
+            });
+          }
+          else{
+          db.query(sqlBill, items,
+            (err, result2) => {
+              if (err) throw err;
+              const p_currency = result2[0]["price_currency"];
+              const i_price = JSON.parse(result2[0]["item_price"]);
+              count = count + i_price;
+              sum = parseFloat(count.toFixed(2));
+              console.log("-----------------------\nSuma: ",sum, p_currency);
+              // res.json("Suma: "+parseFloat(sum)+p_currency);
+              // return sum;
+              db.query(sqlBillInsert,
+                {
+                  items_ids: JSON.stringify(items_ids),
+                  cost_pln: sum,
+                  time_delivery: timeHours+":"+timeMinutes+":"+timeSeconds,
+                  date: new Date(),
+                },
+                )
+            },
+          );
         }
     };
-    const orderT = result[0]["order_time"];
-    const deliceredT = result[0]["delivered_time"];
-    var timeHours = deliceredT.getHours() - orderT.getHours();
-    var timeMinutes = deliceredT.getMinutes() - orderT.getMinutes();
-    var timeSeconds = deliceredT.getSeconds() - orderT.getSeconds();
-    let newDate = new Date();
-    let dateBill = ("0" + newDate.getDate()).slice(-2);
-    let monthBill = ("0" + newDate.getMonth()).slice(-2);
-    let yearBill = newDate.getFullYear();
-    // console.log("Devidery time:", timeHours,"h ",timeMinutes,"min ",timeSeconds,"sec\n") ;
-    res.json("Devidery time:"+timeHours+"h "+timeMinutes+"min "+timeSeconds+"sec"+" Date of bill: "+dateBill + "-"+monthBill+"-"+yearBill) ;
+
+    console.log("Devidery time:", timeHours,"h ",timeMinutes,"min ",timeSeconds,"sec\n") ;
     res.send("Bill is generate");
   });
 });
