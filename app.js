@@ -146,8 +146,10 @@ app.get("/bill", (req, res) => {
           db.query(sqlBill, items,
             (err, result2) => {
               if (err) throw err;
+              const i_name = result2[0]["item_name"];
               const p_currency = result2[0]["price_currency"];
               const i_price = JSON.parse(result2[0]["item_price"]);
+              console.log(i_name, " ",i_price, p_currency);
               count = count + i_price;
               sum = parseFloat(count.toFixed(2));
               console.log("-----------------------\nSuma: ",sum, p_currency);
