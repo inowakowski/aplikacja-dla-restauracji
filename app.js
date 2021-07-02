@@ -101,7 +101,6 @@ app.put("/changeOrderStatus", (req, res) => {
   );
 });
 
-// const apiNbp = `http://api.nbp.pl/api/exchangerates/rates/a/${code}/?format=json`
 
 // Endpoint - Compose bills
 app.get("/bill", (req, res) => {
@@ -118,26 +117,18 @@ app.get("/bill", (req, res) => {
       var timeHours = deliceredT.getHours() - orderT.getHours();
       var timeMinutes = deliceredT.getMinutes() - orderT.getMinutes();
       var timeSeconds = deliceredT.getSeconds() - orderT.getSeconds();
-      // let newDate = new Date();
-      // let dateBill = ("0" + newDate.getDate()).slice(-2);
-      // let monthBill = ("0" + newDate.getMonth()).slice(-2);
-      // let yearBill = newDate.getFullYear();
-      // let sum;
-      // res.json("Devidery time:"+timeHours+"h "+timeMinutes+"min "+timeSeconds+"sec"+" Date of bill: "+dateBill + "-"+monthBill+"-"+yearBill) ;
       var count = 0;
       let sqlBill = `SELECT item_name, item_price, price_currency FROM menu WHERE item_id = ?`;
       let sqlBillInsert = `INSERT INTO bill SET ?`;
       for(const items of items_ids ){
         if (items_ids.length -1 !== items_ids.indexOf(items)){
-          // return sum;
           db.query(sqlBill, items,
             (err, result2) => {
               if (err) throw err;
               const i_name = result2[0]["item_name"];
               const i_price = JSON.parse(result2[0]["item_price"]);
               const p_currency = result2[0]["price_currency"];
-              console.log(i_name, " ",i_price, p_currency);
-              // res.json(i_name+" "+i_price+p_currency);
+              console.log(i_name, " ",i_price, p_currency)
               count = count + i_price;
               sum = count.toFixed(2);
             });
@@ -153,8 +144,6 @@ app.get("/bill", (req, res) => {
               count = count + i_price;
               sum = parseFloat(count.toFixed(2));
               console.log("-----------------------\nSuma: ",sum, p_currency);
-              // res.json("Suma: "+parseFloat(sum)+p_currency);
-              // return sum;
               db.query(sqlBillInsert,
                 {
                   items_ids: JSON.stringify(items_ids),
@@ -173,6 +162,7 @@ app.get("/bill", (req, res) => {
   });
 });
 
+//Endpoint - Currency
 app.get("/currency", (req, res) => {
   const {id_bill, currency} = req.body;
 
@@ -192,9 +182,7 @@ app.get("/currency", (req, res) => {
     
           if (!error && response.statusCode === 200) {
             const c_value = body["rates"][0]["mid"];
-            // const c_value2 = JSON.parse(c_value["bid"]);
             var exchange = pln/c_value.toFixed(2);
-            // res.json(c_value);
             res.json(body);
             db.query(sqlInsert,
               {
