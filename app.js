@@ -145,7 +145,6 @@ app.get("/bill", (req, res) => {
         });
       }
     }
-
     console.log(
       "Devidery time:",
       timeHours,
@@ -162,7 +161,6 @@ app.get("/bill", (req, res) => {
 //Endpoint - converting prices to a different currency - IN
 app.get("/currency", (req, res) => {
   const { id_bill, currency } = req.body;
-
   sqlSelect = `SELECT cost_pln FROM bill WHERE id_bill = ${id_bill}`;
   sqlInsert = `INSERT INTO currency SET ?`;
   var url = `http://api.nbp.pl/api/exchangerates/rates/a/${currency}/?format=json`;
