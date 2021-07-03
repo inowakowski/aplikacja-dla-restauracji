@@ -188,7 +188,7 @@ app.get("/currency", (req, res) => {
             db.query(sqlInsert,
               {
                 bill_id: id_bill,
-                currency_value: parseFloat(exchange),
+                currency_value: parseFloat(exchange.toFixed(2)),
                 currency: currency,
               },
               );
