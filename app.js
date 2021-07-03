@@ -112,11 +112,12 @@ app.get("/bill", (req, res) => {
     (err, result) => {
       if (err) throw err;
       const orderT = result[0]["order_time"];
-      const deliceredT = result[0]["delivered_time"];
+      const deliveredT = result[0]["delivered_time"];
       const items_ids = JSON.parse(result[0]["item_id"]);
-      var timeHours = deliceredT.getHours() - orderT.getHours();
-      var timeMinutes = deliceredT.getMinutes() - orderT.getMinutes();
-      var timeSeconds = deliceredT.getSeconds() - orderT.getSeconds();
+      var timeHours = deliveredT.getHours() - orderT.getHours();
+      var timeMinutes = Math.abs(deliveredT.getMinutes() - orderT.getMinutes());
+      var timeSeconds = Math.abs(deliveredT.getSeconds() - orderT.getSeconds());
+      var time = Math.abs(deliveredT - orderT);
       var count = 0;
       let sqlBill = `SELECT item_name, item_price, price_currency FROM menu WHERE item_id = ?`;
       let sqlBillInsert = `INSERT INTO bill SET ?`;
