@@ -30,7 +30,7 @@ CREATE TABLE `bill` (
   `date` datetime DEFAULT NULL,
   `currency` varchar(3) DEFAULT 'pln',
   PRIMARY KEY (`id_bill`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -56,7 +56,7 @@ CREATE TABLE `currency` (
   `currency_value` float DEFAULT NULL,
   `currency` varchar(3) DEFAULT NULL,
   PRIMARY KEY (`id_currency`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -112,7 +112,7 @@ CREATE TABLE `orders` (
   `delivered_time` datetime DEFAULT NULL,
   PRIMARY KEY (`order_id`),
   CONSTRAINT `orders_chk_1` CHECK (json_valid(`item_id`))
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
