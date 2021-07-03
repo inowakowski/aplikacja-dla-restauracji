@@ -183,7 +183,7 @@ app.get("/currency", (req, res) => {
     
           if (!error && response.statusCode === 200) {
             const c_value = body["rates"][0]["mid"];
-            var exchange = pln/c_value.toFixed(2);
+            var exchange = pln/c_value;
             res.json(body);
             db.query(sqlInsert,
               {
