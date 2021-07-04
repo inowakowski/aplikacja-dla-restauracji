@@ -2,7 +2,7 @@
   "name": "aplikacja-dla-restauracji",
   "version": "1.0.0",
   "description": "Zadanie",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "jest",
     "dev": "nodemon ./index.js",
