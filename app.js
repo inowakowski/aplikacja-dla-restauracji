@@ -58,6 +58,21 @@ app.put("/changeMenu", (req, res) => {
   });
 });
 
+
+//Endpoint - Delete products in menu -IN
+app.delete("/delProduct", (req, res) =>{
+  const {item_id} = req.body;
+
+  let sqlDelete = `DELETE FROM menu WHERE item_id = ${item_id}`;
+
+  db.query(sqlDelete, (err, result) => {
+    if (err) throw err;
+    res.json("Product is delete");
+  });
+
+})
+
+
 // Endpoint - Adding orders - JS
 // table_nr === 0 is takeaway order
 app.post("/addOrder", (req, res) => {
