@@ -21,3 +21,5 @@ Dokumentacja projektu:
 Opis ról w zespole;
 Opis wykonanej pracy;
 Dokumentacja aplikacji (intrukcja działania, opis funkcjonalności).
+
+Repozutorium: https://github.com/inowakowski/aplikacja-dla-restauracji
