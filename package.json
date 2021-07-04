@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/inowakowski/aplikacja-dla-restauracji#readme",
   "devDependencies": {
-    "nodemon": "^2.0.7"
+    "nodemon": "^2.0.9"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
